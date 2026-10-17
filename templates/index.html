@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Database Design Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">DB</div>
+        <div>
+            <h2>Database Design Assistant</h2>
+            <p>AI & Data Science Project</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <span class="badge">SMART DATABASE DESIGN</span>
+            <h1>Turn Your Ideas Into <span>Database Schemas</span></h1>
+            <p>Describe your application and generate suggested database tables and SQL.</p>
+        </section>
+
+        <section class="workspace">
+            <div class="panel">
+                <h2>Describe Your Requirements</h2>
+                <p class="muted">Example: Create a student management system.</p>
+
+                <form method="POST">
+                    <label for="requirement">Your requirements</label>
+                    <textarea id="requirement" name="requirement"
+                        placeholder="Example: Create a student and teacher management system..."
+                        required>{{ requirement }}</textarea>
+                    <button type="submit">Generate Schema →</button>
+                </form>
+            </div>
+
+            <div class="panel">
+                <h2>Generated Database Schema</h2>
+
+                {% if result %}
+                    <p class="notice">{{ result.note }}</p>
+
+                    {% for table in result.tables %}
+                        <div class="table-card">
+                            <h3>▦ {{ table.name }}</h3>
+                            {% for column, datatype in table.columns %}
+                                <div class="column">
+                                    <span>{{ column }}</span>
+                                    <code>{{ datatype }}</code>
+                                </div>
+                            {% endfor %}
+                            <h4>SQL CREATE TABLE</h4>
+                            <pre>{{ table.sql }}</pre>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty">
+                        <div class="symbol">⌘</div>
+                        <h3>Your schema will appear here</h3>
+                        <p>Enter your requirements and click Generate Schema.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <footer>
+            AI Database Design Assistant · Built with Python and Flask
+        </footer>
+    </main>
+</body>
+</html>
